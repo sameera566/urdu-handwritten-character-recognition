@@ -1,4 +1,3 @@
-
 import streamlit as st
 import torch
 import torch.nn as nn
@@ -9,12 +8,63 @@ import requests
 from io import BytesIO
 
 st.set_page_config(
-    page_title="Urdu Handwritten Character Recognition",
-    page_icon="📝"
+    page_title="Urdu Character Recognition",
+    page_icon="📝",
+    layout="centered"
 )
 
-st.title("Urdu Handwritten Character Recognition")
-st.write("Upload an Urdu handwritten character image to recognize it.")
+st.markdown("""
+<style>
+.stApp {
+    background: linear-gradient(135deg, #0f172a, #312e81, #581c87);
+    color: white;
+}
+h1, h2, h3, p, label {
+    color: white !important;
+}
+.main-title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+    padding: 15px;
+}
+.subtitle {
+    text-align: center;
+    color: #e0e7ff;
+    font-size: 17px;
+}
+.stButton > button {
+    background: linear-gradient(90deg, #7c3aed, #db2777);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 25px;
+    font-weight: bold;
+    width: 100%;
+}
+.stButton > button:hover {
+    background: #6d28d9;
+    color: white;
+}
+.result-card {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 18px;
+    padding: 25px;
+    text-align: center;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown(
+    '<div class="main-title">📝 Urdu Handwritten Character Recognition</div>',
+    unsafe_allow_html=True
+)
+st.markdown(
+    '<div class="subtitle">Upload an Urdu handwritten character and let AI recognize it.</div>',
+    unsafe_allow_html=True
+)
 
 MODEL_URL = "https://huggingface.co/sameera123-2026/urdu-handwritten-character-recognition/resolve/main/model.pth"
 LABELS_URL = "https://huggingface.co/sameera123-2026/urdu-handwritten-character-recognition/resolve/main/labels.json"
@@ -52,6 +102,7 @@ transform = transforms.Compose([
     )
 ])
 
+st.markdown("### 📤 Upload Your Character")
 uploaded_file = st.file_uploader(
     "Choose an image",
     type=["png", "jpg", "jpeg"]
@@ -59,10 +110,11 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file).convert("RGB")
+
     st.image(image, caption="Uploaded Character", width=250)
 
-    if st.button("Recognize Character"):
-        with st.spinner("Recognizing..."):
+    if st.button("✨ Recognize Character"):
+        with st.spinner("AI is recognizing your character..."):
             try:
                 model = load_model()
                 labels = load_labels()
@@ -74,8 +126,14 @@ if uploaded_file is not None:
                     prediction = torch.argmax(output, dim=1).item()
 
                 st.success("Recognition Complete!")
-                st.subheader("Predicted Urdu Character")
-                st.title(str(labels[prediction]))
+
+                st.markdown(
+                    '<div class="result-card">'
+                    '<h3>Predicted Urdu Character</h3>'
+                    f'<h1 style="font-size:75px;">{labels[prediction]}</h1>'
+                    '</div>',
+                    unsafe_allow_html=True
+                )
 
             except Exception as e:
                 st.error(f"Error: {e}")

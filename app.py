@@ -17,251 +17,100 @@ st.set_page_config(
 MODEL_URL = "https://huggingface.co/sameera123-2026/urdu-handwritten-character-recognition/resolve/main/model.pth"
 LABELS_URL = "https://huggingface.co/sameera123-2026/urdu-handwritten-character-recognition/resolve/main/labels.json"
 
-# ---------------- CUSTOM DESIGN ----------------
-
+# ---------- DESIGN ----------
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 .stApp {
-    background:
-        radial-gradient(ellipse at 80% 10%, #21105a 0%, transparent 35%),
-        radial-gradient(ellipse at 5% 50%, #170c3c 0%, transparent 35%),
-        #07091b;
-    font-family: 'Inter', sans-serif;
-    color: #ffffff;
-}
-
-header, footer {visibility: hidden;}
-
-.block-container {
-    max-width: 1400px;
-    padding: 2rem 3rem 2rem 3rem;
-}
-
-h1, h2, h3, p, label {
-    color: #ffffff !important;
-}
-
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 22px;
-    border: 1px solid #30215d;
-    border-radius: 18px;
-    background: rgba(17, 15, 45, 0.88);
-    margin-bottom: 45px;
-}
-
-.brand {
-    font-size: 23px;
-    font-weight: 800;
+    background: #080b1c;
     color: white;
 }
-
-.brand span {color: #a855f7;}
-
-.nav-right {
-    color: #c4b5fd;
-    font-size: 14px;
-    font-weight: 600;
-}
-
+header {visibility:hidden;}
+.block-container {max-width:1250px; padding-top:2rem;}
+h1,h2,h3,p,label {color:white;}
 .hero {
-    padding: 10px 5px 35px 5px;
+    padding:28px;
+    border:1px solid #493078;
+    border-radius:20px;
+    background:linear-gradient(120deg,#21104a,#10152e);
+    margin-bottom:25px;
 }
-
-.hero h1 {
-    font-size: clamp(32px, 4vw, 52px);
-    font-weight: 800;
-    line-height: 1.15;
-    margin-bottom: 12px;
-    letter-spacing: -1.5px;
+.hero h1 {font-size:40px;font-weight:800;}
+.hero span {color:#bd8aff;}
+.panel {
+    background:#12152e;
+    border:1px solid #39305e;
+    border-radius:18px;
+    padding:22px;
+    margin-bottom:15px;
 }
-
-.gradient-text {
-    background: linear-gradient(90deg, #c084fc, #7c3aed, #60a5fa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.result {
+    background:linear-gradient(145deg,#29145a,#12152e);
+    border:1px solid #9355dc;
+    border-radius:18px;
+    padding:25px;
+    text-align:center;
 }
-
-.hero p {
-    color: #aaa8d0 !important;
-    font-size: 17px;
+.big-urdu {
+    font-size:100px;
+    color:white;
+    font-family:serif;
 }
-
-.section-card {
-    background: linear-gradient(145deg, #171438, #0d102b);
-    border: 1px solid #493078;
-    border-radius: 22px;
-    padding: 26px;
-    min-height: 390px;
-    box-shadow: 0 15px 45px rgba(0,0,0,0.25);
+.metric {
+    background:#171b39;
+    border:1px solid #493078;
+    border-radius:14px;
+    padding:18px;
+    text-align:center;
 }
-
-.card-heading {
-    font-size: 22px;
-    font-weight: 750;
-    margin-bottom: 6px;
-}
-
-.card-description {
-    color: #aaa8d0 !important;
-    font-size: 14px;
-    margin-bottom: 22px;
-}
-
-.upload-symbol {
-    font-size: 42px;
-    color: #c084fc;
-    text-align: center;
-    padding: 15px;
-}
-
-.result-box {
-    background:
-        radial-gradient(circle at 50% 0%, #392071, transparent 65%),
-        #100d2c;
-    border: 1px solid #8546e9;
-    border-radius: 20px;
-    padding: 25px;
-    text-align: center;
-    box-shadow: 0 0 30px rgba(124,58,237,0.15);
-}
-
-.result-character {
-    font-size: 105px;
-    color: #ffffff;
-    line-height: 1.5;
-    font-family: serif;
-}
-
-.result-label {
-    color: #c4b5fd;
-    font-size: 13px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
-
-.score {
-    font-size: 34px;
-    font-weight: 800;
-    color: #c084fc;
-    margin-top: 10px;
-}
-
-.stFileUploader section {
-    background: #11102c !important;
-    border: 1px dashed #9661e9 !important;
-    border-radius: 15px !important;
-}
-
-.stFileUploader section:hover {
-    border-color: #c084fc !important;
-}
-
+.metric h2 {color:#c49aff;}
 .stButton button {
-    background: linear-gradient(100deg, #9333ea, #5b35df) !important;
-    border: 1px solid #a855f7 !important;
-    color: white !important;
-    border-radius: 13px !important;
-    height: 52px !important;
-    font-size: 16px !important;
-    font-weight: 700 !important;
-    box-shadow: 0 5px 25px rgba(124,58,237,0.3);
-    transition: 0.2s ease;
+    background:linear-gradient(90deg,#9333ea,#5b45d6);
+    color:white;
+    border:0;
+    border-radius:12px;
+    height:45px;
+    font-weight:700;
 }
-
-.stButton button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 30px rgba(168,85,247,0.5);
-}
-
-.stats-title {
-    font-size: 23px;
-    font-weight: 750;
-    margin: 30px 0 15px 0;
-}
-
-.stat-card {
-    background: linear-gradient(145deg, #19143b, #10132d);
-    border: 1px solid #38265f;
-    border-radius: 17px;
-    padding: 20px 12px;
-    text-align: center;
-}
-
-.stat-number {
-    font-size: 25px;
-    font-weight: 800;
-    color: #c084fc;
-}
-
-.stat-name {
-    color: #aaa8d0;
-    font-size: 13px;
-    margin-top: 5px;
-}
-
-.footer {
-    text-align: center;
-    color: #77749f;
-    border-top: 1px solid #292044;
-    margin-top: 40px;
-    padding: 22px;
-    font-size: 13px;
-}
-
-div[data-testid="stImage"] img {
-    border: 2px solid #7041b8;
-    border-radius: 15px;
-}
-
-.stAlert {
-    background: #171438;
-    border: 1px solid #493078;
-    border-radius: 12px;
+.stButton button:hover {border:1px solid #d8b4fe;}
+.stFileUploader section {
+    background:#171633;
+    border:1px dashed #9b67dc;
+    border-radius:14px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-
-# ---------------- MODEL ----------------
-
+# ---------- MODEL ----------
 @st.cache_resource
 def load_model():
-    response = requests.get(MODEL_URL, timeout=120)
-    response.raise_for_status()
+    r = requests.get(MODEL_URL, timeout=120)
+    r.raise_for_status()
 
     model = models.resnet18(weights=None)
     model.fc = nn.Linear(512, 42)
-
-    state = torch.load(
-        BytesIO(response.content),
-        map_location="cpu"
+    model.load_state_dict(
+        torch.load(BytesIO(r.content), map_location="cpu")
     )
-    model.load_state_dict(state)
     model.eval()
-
     return model
-
 
 @st.cache_data
 def load_labels():
-    response = requests.get(LABELS_URL, timeout=60)
-    response.raise_for_status()
-    return json.loads(response.text)
+    r = requests.get(LABELS_URL, timeout=60)
+    r.raise_for_status()
+    return json.loads(r.text)
 
+def recognize(image):
+    model = load_model()
+    labels = load_labels()
 
-def predict_character(image, model, labels):
     transform = transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.Grayscale(num_output_channels=3),
         transforms.ToTensor(),
         transforms.Normalize(
-            mean=[0.485, 0.456, 0.406],
-            std=[0.229, 0.224, 0.225]
+            [0.485, 0.456, 0.406],
+            [0.229, 0.224, 0.225]
         )
     ])
 
@@ -269,136 +118,189 @@ def predict_character(image, model, labels):
 
     with torch.no_grad():
         output = model(tensor)
-        probabilities = torch.softmax(output, dim=1)
-        score, index = torch.max(probabilities, dim=1)
+        probs = torch.softmax(output, dim=1)[0]
+        scores, indices = torch.topk(probs, 3)
 
-    return labels[index.item()], score.item() * 100
+    results = []
+    for score, index in zip(scores, indices):
+        results.append({
+            "character": labels[index.item()],
+            "confidence": score.item() * 100
+        })
 
+    return results
 
-# ---------------- HEADER ----------------
+# ---------- SESSION STATE ----------
+if "history" not in st.session_state:
+    st.session_state.history = []
 
+if "result" not in st.session_state:
+    st.session_state.result = None
+
+if "image" not in st.session_state:
+    st.session_state.image = None
+
+# ---------- HEADER ----------
 st.markdown("""
-<div class="navbar">
-    <div class="brand">🧠 Urdu <span>AI Studio</span></div>
-    <div class="nav-right">✦ SMART CHARACTER RECOGNITION</div>
-</div>
-
 <div class="hero">
-    <h1>Urdu Handwritten<br>
-    Character <span class="gradient-text">Recognition</span></h1>
-    <p>Transform handwritten Urdu characters into AI predictions.</p>
+    <h1>🧠 Urdu <span>AI Studio</span></h1>
+    <p>Intelligent Urdu Handwritten Character Recognition</p>
+    <p>Upload • Recognize • Explore Results</p>
 </div>
 """, unsafe_allow_html=True)
 
+# ---------- NAVIGATION ----------
+tab_home, tab_history, tab_info = st.tabs([
+    "🏠 Recognition",
+    "📜 History",
+    "ℹ️ Model Information"
+])
 
-# ---------------- MAIN PANELS ----------------
+# ---------- RECOGNITION ----------
+with tab_home:
+    left, right = st.columns([1, 1], gap="large")
 
-left, right = st.columns([1, 1], gap="large")
+    with left:
+        st.markdown('<div class="panel">', unsafe_allow_html=True)
+        st.subheader("📤 Upload Character")
+        st.write("Upload one handwritten Urdu character image.")
 
-with left:
-    st.markdown("""
-    <div class="section-card">
-        <div class="card-heading">📤 Upload Your Character</div>
-        <div class="card-description">
-            Select an image containing one handwritten Urdu character.
-        </div>
-        <div class="upload-symbol">⇧</div>
-    </div>
-    """, unsafe_allow_html=True)
+        uploaded = st.file_uploader(
+            "Choose image",
+            type=["png", "jpg", "jpeg"],
+            key="character_upload"
+        )
 
-    uploaded_file = st.file_uploader(
-        "Choose an image",
-        type=["png", "jpg", "jpeg"],
-        label_visibility="collapsed"
-    )
+        if uploaded:
+            image = Image.open(uploaded).convert("RGB")
+            st.session_state.image = image
+            st.image(image, caption="Image Preview", width=250)
 
-    if uploaded_file:
-        image = Image.open(uploaded_file)
-        st.image(image, caption="Your uploaded character", width=170)
+        col1, col2 = st.columns(2)
 
-    recognize = st.button(
-        "✦  Recognize Character",
-        use_container_width=True,
-        disabled=uploaded_file is None
-    )
+        with col1:
+            predict_btn = st.button(
+                "✨ Predict",
+                use_container_width=True,
+                disabled=st.session_state.image is None
+            )
 
-with right:
-    st.markdown("""
-    <div class="section-card">
-        <div class="card-heading">🤖 Prediction Result</div>
-        <div class="card-description">
-            Your recognition result will appear below.
-        </div>
-    """, unsafe_allow_html=True)
+        with col2:
+            reset_btn = st.button(
+                "↻ Reset",
+                use_container_width=True
+            )
 
-    if uploaded_file and recognize:
-        try:
-            with st.spinner("Loading AI model and recognizing..."):
-                model = load_model()
-                labels = load_labels()
-                character, confidence = predict_character(
-                    image, model, labels
-                )
+        if reset_btn:
+            st.session_state.result = None
+            st.session_state.image = None
+            st.session_state.history = []
+            st.rerun()
+
+        if predict_btn:
+            try:
+                with st.spinner("AI is analyzing your character..."):
+                    results = recognize(st.session_state.image)
+
+                st.session_state.result = results
+                st.session_state.history.insert(0, results)
+
+            except Exception as e:
+                st.error(f"Prediction error: {e}")
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with right:
+        st.markdown('<div class="panel">', unsafe_allow_html=True)
+        st.subheader("🤖 AI Prediction")
+
+        if st.session_state.result:
+            results = st.session_state.result
+            best = results[0]
 
             st.markdown(f"""
-            <div class="result-box">
-                <div class="result-label">Predicted Character</div>
-                <div class="result-character">{character}</div>
-                <div class="result-label">Recognition complete</div>
-                <div class="score">{confidence:.2f}%</div>
-                <div class="result-label">Model confidence score</div>
+            <div class="result">
+                <p>Best Predicted Character</p>
+                <div class="big-urdu">{best['character']}</div>
+                <h2>{best['confidence']:.2f}%</h2>
+                <p>Model confidence score</p>
             </div>
             """, unsafe_allow_html=True)
 
-        except Exception as error:
-            st.error(f"Prediction failed: {error}")
+            st.markdown("### Top 3 Predictions")
 
+            for i, item in enumerate(results):
+                st.write(
+                    f"**{i+1}. {item['character']}** — "
+                    f"{item['confidence']:.2f}%"
+                )
+                st.progress(
+                    min(1.0, max(0.0, item["confidence"] / 100))
+                )
+
+        else:
+            st.info("Upload an image and click Predict to see results.")
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# ---------- HISTORY ----------
+with tab_history:
+    st.subheader("📜 Prediction History")
+
+    if st.session_state.history:
+        for number, record in enumerate(st.session_state.history, 1):
+            best = record[0]
+            with st.expander(
+                f"Prediction {number} — {best['character']}"
+            ):
+                for item in record:
+                    st.write(
+                        f"{item['character']} : "
+                        f"{item['confidence']:.2f}%"
+                    )
     else:
+        st.info("No predictions yet. Recognize an image first.")
+
+    if st.session_state.history:
+        if st.button("Clear History"):
+            st.session_state.history = []
+            st.rerun()
+
+# ---------- MODEL INFORMATION ----------
+with tab_info:
+    st.subheader("ℹ️ Model Information")
+
+    a, b, c = st.columns(3)
+
+    with a:
         st.markdown("""
-        <div class="result-box">
-            <div class="result-label">Waiting for image</div>
-            <div class="result-character">؟</div>
-            <div class="result-label">
-                Upload an image to see the prediction
-            </div>
+        <div class="metric">
+        <h2>ResNet18</h2>
+        <p>Pretrained Architecture</p>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("</div>", unsafe_allow_html=True)
-
-
-# ---------------- STATISTICS ----------------
-
-st.markdown(
-    '<div class="stats-title">✦ Model Overview</div>',
-    unsafe_allow_html=True
-)
-
-a, b, c, d = st.columns(4)
-
-stats = [
-    (a, "19,901", "Dataset Images"),
-    (b, "42", "Urdu Classes"),
-    (c, "95.38%", "Test Accuracy"),
-    (d, "ResNet18", "AI Architecture")
-]
-
-for col, number, name in stats:
-    with col:
-        st.markdown(f"""
-        <div class="stat-card">
-            <div class="stat-number">{number}</div>
-            <div class="stat-name">{name}</div>
+    with b:
+        st.markdown("""
+        <div class="metric">
+        <h2>42</h2>
+        <p>Character Classes</p>
         </div>
         """, unsafe_allow_html=True)
 
+    with c:
+        st.markdown("""
+        <div class="metric">
+        <h2>95.38%</h2>
+        <p>Test Accuracy</p>
+        </div>
+        """, unsafe_allow_html=True)
 
-# ---------------- FOOTER ----------------
+    st.markdown("### Model Repository")
+    st.link_button(
+        "Open Hugging Face Model",
+        "https://huggingface.co/sameera123-2026/urdu-handwritten-character-recognition"
+    )
 
-st.markdown("""
-<div class="footer">
-    Built with ❤️ using PyTorch and Streamlit
-    <br><br>
-    Urdu AI Studio | Handwritten Character Recognition
-</div>
-""", unsafe_allow_html=True)
+st.divider()
+st.caption("Urdu AI Studio | Built with PyTorch and Streamlit")

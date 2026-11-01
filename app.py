@@ -8,7 +8,7 @@ import requests
 from io import BytesIO
 
 st.set_page_config(
-    page_title="Urdu Character Recognition",
+    page_title="Urdu AI Recognition",
     page_icon="📝",
     layout="wide"
 )
@@ -16,100 +16,109 @@ st.set_page_config(
 st.markdown("""
 <style>
 .stApp {
-    background: #faf9ff;
-    color: #171044;
+    background: radial-gradient(circle at top left, #25204b, #090b18 55%);
+    color: #ffffff;
 }
 
 header {visibility: hidden;}
 
-.main-title {
-    background: linear-gradient(110deg, #e9ddff, #c8b5ff);
-    color: #171044;
-    padding: 30px;
-    border-radius: 18px;
-    text-align: center;
-    font-size: 34px;
-    font-weight: 800;
-    margin-bottom: 25px;
-    border: 1px solid #c7b5ff;
+.block-container {
+    max-width: 1150px;
+    padding-top: 2rem;
 }
 
-.subtitle {
+.hero {
     text-align: center;
-    color: #40336f;
+    padding: 35px 20px;
+    background: linear-gradient(135deg, #211b42, #15152e);
+    border: 1px solid #51418c;
+    border-radius: 22px;
+    box-shadow: 0 0 35px rgba(124, 58, 237, 0.18);
+    margin-bottom: 30px;
+}
+
+.hero h1 {
+    color: white;
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #c4b5fd;
     font-size: 17px;
-    margin-bottom: 25px;
 }
 
-div[data-testid="stFileUploader"] {
-    background: white;
-    padding: 20px;
-    border: 2px dashed #b9a5f5;
-    border-radius: 15px;
+.section-title {
+    color: #c4b5fd;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+
+.panel {
+    background: rgba(27, 28, 53, 0.9);
+    border: 1px solid #40376c;
+    border-radius: 20px;
+    padding: 25px;
+    min-height: 350px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.25);
 }
 
 .stButton > button {
-    background: linear-gradient(90deg, #5b2dbb, #7545d5);
+    background: linear-gradient(90deg, #7c3aed, #a855f7);
     color: white;
     border: none;
     border-radius: 12px;
-    padding: 13px;
+    height: 48px;
     font-weight: bold;
     width: 100%;
 }
 
 .stButton > button:hover {
-    background: #48219d;
+    background: linear-gradient(90deg, #9333ea, #c084fc);
     color: white;
+    border: 1px solid #c4b5fd;
 }
 
-.panel {
-    background: white;
-    border: 1px solid #ded4ff;
-    border-radius: 16px;
-    padding: 22px;
-    min-height: 300px;
-    box-shadow: 0 4px 15px rgba(70, 40, 130, 0.07);
-}
-
-.panel-title {
-    background: #5429ad;
-    color: white;
+div[data-testid="stFileUploader"] {
+    background: #17172e;
+    border: 1px dashed #8b5cf6;
+    border-radius: 14px;
     padding: 15px;
-    border-radius: 10px;
-    font-size: 23px;
-    font-weight: bold;
-    margin-bottom: 20px;
+}
+
+div[data-testid="stFileUploader"] label,
+.stMarkdown p,
+.stMarkdown h3 {
+    color: #eeeeff;
 }
 
 .prediction {
-    background: #eee7ff;
-    color: #21104f;
-    border-radius: 18px;
+    background: linear-gradient(135deg, #30215c, #211a43);
+    border: 1px solid #8b5cf6;
+    border-radius: 20px;
     padding: 25px;
     text-align: center;
-    font-size: 75px;
-    margin: 15px auto;
+    font-size: 90px;
+    color: white;
+    margin: 20px 0;
+    box-shadow: 0 0 25px rgba(139,92,246,0.2);
 }
 
 .footer {
-    background: #f0ebff;
-    border: 1px solid #ded4ff;
-    border-radius: 15px;
-    padding: 22px;
     text-align: center;
-    color: #29145e;
-    margin-top: 25px;
+    color: #a5a0c5;
+    padding: 25px;
+    margin-top: 30px;
+    border-top: 1px solid #393456;
 }
 </style>
 """, unsafe_allow_html=True)
 
 st.markdown("""
-<div class="main-title">
-📝 Urdu Handwritten Character Recognition
-</div>
-<div class="subtitle">
-Upload an image of a handwritten Urdu character and get instant prediction.
+<div class="hero">
+    <h1>📝 Urdu Handwritten Character Recognition</h1>
+    <p>Powered by Deep Learning and ResNet18</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -152,42 +161,38 @@ transform = transforms.Compose([
 left, right = st.columns(2, gap="large")
 
 with left:
-    st.markdown(
-        '<div class="panel-title">☁️ Upload Image</div>',
-        unsafe_allow_html=True
-    )
+    st.markdown('<div class="panel">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">📤 Upload Your Character</div>', unsafe_allow_html=True)
 
     uploaded_file = st.file_uploader(
-        "Choose a handwritten Urdu character image",
+        "Choose an Urdu character image",
         type=["png", "jpg", "jpeg"]
     )
 
     if uploaded_file:
         image = Image.open(uploaded_file).convert("RGB")
-        st.image(image, caption="Uploaded Character", width=250)
+        st.image(image, caption="Your Uploaded Image", width=250)
         st.success("Image uploaded successfully!")
 
-    recognize = st.button("🔍 Recognize Character")
+    recognize = st.button("✨ Recognize Character")
+    st.markdown('</div>', unsafe_allow_html=True)
 
 with right:
-    st.markdown(
-        '<div class="panel-title">✨ Prediction Result</div>',
-        unsafe_allow_html=True
-    )
+    st.markdown('<div class="panel">', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">🤖 AI Prediction Result</div>', unsafe_allow_html=True)
 
     if uploaded_file and recognize:
         try:
-            with st.spinner("AI is recognizing your character..."):
+            with st.spinner("AI is analyzing your character..."):
                 model = load_model()
                 labels = load_labels()
+
                 image_tensor = transform(image).unsqueeze(0)
 
                 with torch.no_grad():
                     output = model(image_tensor)
                     probabilities = torch.softmax(output, dim=1)
-                    confidence, prediction = torch.max(
-                        probabilities, dim=1
-                    )
+                    confidence, prediction = torch.max(probabilities, dim=1)
 
                 character = labels[prediction.item()]
                 score = confidence.item() * 100
@@ -195,33 +200,37 @@ with right:
             st.success("Recognition Complete!")
 
             st.markdown(
-                f'<div style="text-align:center;color:#171044;'
-                f'font-size:24px;font-weight:bold;">'
-                f'Predicted Character</div>'
                 f'<div class="prediction" dir="rtl">{character}</div>',
                 unsafe_allow_html=True
             )
 
-            st.success(f"Confidence: {score:.2f}%")
+            st.markdown(
+                f'<h3 style="text-align:center;color:#c4b5fd;">'
+                f'Predicted Character</h3>',
+                unsafe_allow_html=True
+            )
+
+            st.metric("Model Confidence", f"{score:.2f}%")
 
         except Exception as e:
             st.error(f"Error: {e}")
 
     elif not uploaded_file:
-        st.info("Upload an image to see the prediction here.")
+        st.info("Upload an image to see the AI prediction.")
+
     else:
-        st.info("Click Recognize Character to get your result.")
+        st.info("Click Recognize Character to start prediction.")
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("""
 <div class="footer">
-<b>Dataset:</b> Cursive-Text Mendeley v3 (19,901 images, 42 classes)
-<br><br>
-<b>Model:</b> ResNet18 (Fine-tuned)
-<br><br>
-<b>Built With:</b> PyTorch • Streamlit
-<br><br>
-<a href="https://github.com/sameera566/urdu-handwritten-character-recognition">
-View Project on GitHub
-</a>
+    <b>Model:</b> ResNet18 &nbsp; | &nbsp;
+    <b>Dataset:</b> 19,901 Images &nbsp; | &nbsp;
+    <b>Classes:</b> 42
+    <br><br>
+    Built with PyTorch, Hugging Face and Streamlit
+    <br><br>
+    © Urdu Handwritten Character Recognition Project
 </div>
 """, unsafe_allow_html=True)
